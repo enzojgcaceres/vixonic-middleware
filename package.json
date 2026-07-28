@@ -1,0 +1,17 @@
+{
+  "name": "csat-single-participant",
+  "version": "1.0.0",
+  "description": "Middleware que detacha participantes CC'eados de una conversacion de Intercom, dejando solo al autor original, para permitir el envio de CSAT via Workflow.",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "node --watch src/index.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "dotenv": "^16.4.5"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

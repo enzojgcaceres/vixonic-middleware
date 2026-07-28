@@ -1,0 +1,21 @@
+# Dependencias
+node_modules/
+
+# Variables de entorno (nunca subir secrets/tokens al repo)
+.env
+.env.local
+.env.*.local
+
+# Logs
+npm-debug.log*
+*.log
+
+# Editor / SO
+.DS_Store
+.vscode/
+.idea/
+
+# Node
+*.pid
+*.seed
+*.pid.lock
