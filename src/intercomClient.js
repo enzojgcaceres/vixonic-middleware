@@ -38,6 +38,27 @@ async function getConversation(conversationId) {
 }
 
 /**
+ * Trae un contacto individual (necesitamos su email para poder filtrar
+ * por dominio interno en customerResolver.js -- conversation.contacts.contacts
+ * solo trae { type, id }, sin email).
+ */
+async function getContact(contactId) {
+  const res = await fetch(`${getBaseUrl()}/contacts/${contactId}`, {
+    method: 'GET',
+    headers: headers(),
+  });
+
+  if (!res.ok) {
+    const body = await safeJson(res);
+    throw new Error(
+      `Error al obtener el contacto ${contactId}: ${res.status} ${JSON.stringify(body)}`
+    );
+  }
+
+  return res.json();
+}
+
+/**
  * Detacha un contacto (customer) de una conversacion grupal.
  * Devuelve la lista actualizada de customers, o null si Intercom
  * responde 422 "Last customer" (no se puede remover al ultimo).
@@ -76,4 +97,4 @@ async function safeJson(res) {
   }
 }
 
-module.exports = { getConversation, detachContact };
+module.exports = { getConversation, getContact, detachContact };

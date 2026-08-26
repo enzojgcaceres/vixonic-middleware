@@ -10,8 +10,18 @@ sin ambiguedad.
 Intercom no envia CSAT cuando una conversacion tiene mas de un
 participante -- no tiene forma nativa de decidir a cual de todos
 mandarle la encuesta. Este servicio resuelve eso quedandose solo con el
-`source.author` original (quien escribio el mail que inicio la
-conversacion) justo antes de que el Workflow dispare el CSAT.
+cliente real justo antes de que el Workflow dispare el CSAT.
+
+**Ojo:** no alcanza con quedarse con `source.author`. Eso funciona para
+conversaciones que inicia el cliente, pero se rompe cuando la
+conversacion la arranca un agente (mail saliente a varios destinatarios
+en To/Cc) -- ahi `source.author` es el admin, no matchea con ningun
+contacto de la conversacion, y confiar en el a ciegas termina dejando
+como "sobreviviente" a quien haya quedado ultimo en el array de
+contactos (por el 422 "Last customer" de Intercom), sin ninguna
+garantia de que sea el cliente real. Por eso `src/customerResolver.js`
+filtra ademas por `INTERNAL_DOMAINS`: nunca deja como sobreviviente a un
+contacto de tu propio dominio, aunque `source.author` diga lo contrario.
 
 ## Endpoint principal
 
@@ -36,7 +46,8 @@ no se pudo identificar al autor original), o hay error 4xx/5xx.
 
 ```bash
 cp .env.example .env
-# completar INTERCOM_ACCESS_TOKEN, INTERCOM_ADMIN_ID, WEBHOOK_SHARED_SECRET
+# completar INTERCOM_ACCESS_TOKEN, INTERCOM_ADMIN_ID, WEBHOOK_SHARED_SECRET,
+# INTERNAL_DOMAINS (tu propio dominio, o los de tus clientes B2B si aplica)
 npm install
 npm run dev
 ```
