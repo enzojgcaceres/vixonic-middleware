@@ -22,8 +22,8 @@ async function main() {
   console.log('Dominios internos configurados (INTERNAL_DOMAINS):', getInternalDomains());
   console.log('Total de participantes:', participants.length);
 
-  if (participants.length <= 1) {
-    console.log('\nUn solo participante, no hay nada para podar.');
+  if (participants.length === 0) {
+    console.log('\nNingun participante, no hay nada para podar.');
     return;
   }
 

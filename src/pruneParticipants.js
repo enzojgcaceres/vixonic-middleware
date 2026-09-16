@@ -28,14 +28,22 @@ async function pruneParticipants(conversationId, adminId) {
     conversation?.customers ||
     [];
 
-  if (participants.length <= 1) {
+  if (participants.length === 0) {
     return {
       status: 'skipped',
-      reason: 'single_participant',
+      reason: 'no_participants',
       conversation_id: conversationId,
       participant_count: participants.length,
     };
   }
+
+  // OJO: aunque ya haya un solo participante, igual hay que resolverlo via
+  // customerResolver -- si ese unico participante es de dominio interno
+  // (ej. un agente registrado como contact/user en vez de admin), NO es el
+  // cliente real y no hay que dejar pasar el CSAT. Ver caso real:
+  // conversacion con un solo participante, falvarez@vixonic.com, a quien
+  // el Workflow le mandaba el CSAT porque este chequeo cortaba antes de
+  // mirar el dominio.
 
   const participantsWithEmail = await Promise.all(
     participants.map(async (p) => {
